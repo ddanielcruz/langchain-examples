@@ -1,14 +1,14 @@
 import 'dotenv/config'
 
-import { ConversationChain } from 'langchain/chains'
 import { OpenAI } from 'langchain/llms/openai'
-import { BufferMemory } from 'langchain/memory'
+import { BufferWindowMemory } from 'langchain/memory'
+import { ConversationChain } from 'langchain/chains'
 
-import { onMessage, onResponse } from '../helpers/chat.js'
 import { callbacks } from '../helpers/llm.js'
+import { onMessage, onResponse } from '../helpers/chat.js'
 
 const model = new OpenAI({ callbacks })
-const memory = new BufferMemory()
+const memory = new BufferWindowMemory({ k: 3 })
 const chain = new ConversationChain({ llm: model, memory })
 
 onMessage(async message => {

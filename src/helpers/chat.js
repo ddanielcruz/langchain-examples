@@ -13,8 +13,9 @@ export const rl = readline.createInterface({
  * @param {(message: string) => Promise<void>} handler
  */
 export function onMessage(handler) {
-  const prompt = isFirstQuestion ? chalk.blue('User: ') : chalk.blue('\nUser: ')
-  isFirstQuestion = false
+  let prompt = `[User] `
+  if (!isFirstQuestion) prompt = `\n${prompt}`
+  else isFirstQuestion = false
 
   rl.question(chalk.blue(prompt), async answer => {
     await handler?.(answer)
@@ -23,5 +24,5 @@ export function onMessage(handler) {
 }
 
 export function onResponse(response) {
-  console.log(chalk.green('Bot:'), response.trim())
+  console.log(chalk.green('[Bot]'), response.trim())
 }
